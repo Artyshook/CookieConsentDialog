@@ -2,33 +2,20 @@ import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {useCookieConsent} from "../../hooks";
 import {emitConsentUpdate} from "../../utils";
+import {CookieConsentDialogProps, CookieOption, cookieOptions} from "./utils/cookieOptions";
 
-// Definujeme typ pro jednotlivou cookie možnost
-interface CookieOption {
-    id: string;
-    text: string;
-}
 
-// Definujeme typ pro props komponenty
-interface CookieConsentDialogProps {
-    onChoice: (choice: string) => void;
-}
-
-// Předdefinované možnosti cookies
-const cookieOptions: CookieOption[] = [
-
-    { id: 'necessary', text: 'Nezbytné cookies' },
-    { id: 'analytics', text: 'Analytické cookies' },
-    { id: 'marketing', text: 'Marketingové cookies' },
-    { id: 'socialMedia', text: 'Cookies pro sociální média' }
-];
-
-export default function  CookieConsentDialog ({ onChoice }: CookieConsentDialogProps) {
+export default function CookieConsentDialog({ onChoice }: CookieConsentDialogProps) {
+    // State to track if the portal target is available in the DOM
     const [isTargetAvailable, setIsTargetAvailable] = useState(false);
-    const consent = useCookieConsent(); // Just getting consent
+
+    // State to store the user's consent status
+    const consent = useCookieConsent();
+
+    // State to track which cookie option has been chosen by the user
     const [chosenOption, setChosenOption] = useState<string | null>(null);
 
-
+    // Effect to verify that the body element is available for rendering the portal
     useEffect(() => {
         const targetEl = document.body;
         if (targetEl) {
@@ -36,18 +23,26 @@ export default function  CookieConsentDialog ({ onChoice }: CookieConsentDialogP
         }
     }, []);
 
+    // Handler for click events on cookie options
     const handleOptionClick = (option: CookieOption) => {
-        onChoice(option.text)
+        // Propagate the chosen option to the parent component
+        onChoice(option.text);
+        // Update the chosen option state
         setChosenOption(option.id);
-        emitConsentUpdate([option.id]); // Emitting the event will update the consent state in the hook
+        // Emit an event to update the consent state elsewhere in the app
+        emitConsentUpdate([option.id]);
     };
+
+    // Conditional rendering to prevent the dialog from showing if consent is already given
+    // or if the portal target is not available
     if (!isTargetAvailable || consent) {
-        // Don't render if the target is not available or consent has been given
         return null;
     }
 
-    // Portal rendering logic
+    // Rendering the dialog using a React Portal to attach it directly to the body
+    // This ensures the dialog appears on top of other content
     return ReactDOM.createPortal(
+        // Overlay div to create a backdrop for the modal, covering the entire viewport
         <div style={{
             position: 'fixed',
             top: 0,
@@ -59,6 +54,7 @@ export default function  CookieConsentDialog ({ onChoice }: CookieConsentDialogP
             justifyContent: 'center',
             alignItems: 'center'
         }}>
+            {/* Dialog container with styling */}
             <div style={{
                 backgroundColor: '#fff',
                 padding: '20px',
@@ -68,9 +64,13 @@ export default function  CookieConsentDialog ({ onChoice }: CookieConsentDialogP
                 width: '80%',
                 maxWidth: '400px'
             }}>
+                {/* Title of the dialog */}
                 <h2>Vyberte si jednu z variant</h2>
+                {/* Container for the cookie option buttons */}
                 <div style={{ marginTop: '20px' }}>
+                    {/* Mapping over the predefined cookie options and rendering them */}
                     {cookieOptions.map((option) => (
+                        // Individual cookie option button
                         <div
                             key={option.id}
                             style={{
@@ -85,6 +85,7 @@ export default function  CookieConsentDialog ({ onChoice }: CookieConsentDialogP
                                 boxShadow: chosenOption === option.id ? '0 2px 4px rgba(0, 0, 0, 0.2)' : 'none',
                                 transform: chosenOption === option.id ? 'scale(1.05)' : 'none'
                             }}
+                            // Click handler for selecting an option
                             onClick={() => handleOptionClick(option)}
                         >
                             {option.text}
@@ -93,9 +94,7 @@ export default function  CookieConsentDialog ({ onChoice }: CookieConsentDialogP
                 </div>
             </div>
         </div>,
-        document.body
+        document.body // Attaching the portal to the body element
     );
-
 };
-
 

@@ -43,6 +43,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
+import replace from '@rollup/plugin-replace';
+import ignore from 'rollup-plugin-ignore';
 
 
 
@@ -76,6 +78,9 @@ import packageJson from './package.json' assert { type: 'json' };
 //     // Remove the second object that includes the dts plugin
 // ];
 
+import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle";
+
+
 export default [
     {
         input: 'src/index.ts',
@@ -94,11 +99,13 @@ export default [
         plugins: [
             resolve(),
             commonjs(),
+            ignore(['**/__tests__', '**/*.test.ts', '**/*.spec.ts']),
             typescript({
                 tsconfig: './tsconfig.json',
                 declaration: true,
                 outDir: 'dist',
             }),
+
         ],
         external: ['react', 'react-dom'],
     },
