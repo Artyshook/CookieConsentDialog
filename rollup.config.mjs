@@ -99,7 +99,7 @@ export default [
         plugins: [
             resolve(),
             commonjs(),
-            ignore(['**/__tests__', '**/*.test.ts', '**/*.spec.ts']),
+            ignore(['**/__tests__', '**/*.test.ts', '**/*.spec.ts', '**/*.test.tsx']),
             typescript({
                 tsconfig: './tsconfig.json',
                 declaration: true,
