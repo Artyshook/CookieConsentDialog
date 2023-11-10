@@ -5,7 +5,7 @@ interface Props {
     onConsent: (choice: ConsentChoice) => void;
 }
 
-const CookieConsentDialog = ({ onConsent } : Props) => {
+const CookieConsentDialog1 = ({ onConsent } : Props) => {
     const [isVisible, setIsVisible] = useState(true);
 
     const handleConsent = (choice: ConsentChoice) => {
@@ -30,4 +30,4 @@ const CookieConsentDialog = ({ onConsent } : Props) => {
     );
 };
 
-export default CookieConsentDialog;
+export default CookieConsentDialog1;

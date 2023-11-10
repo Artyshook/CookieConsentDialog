@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "my-example-saibel9",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -12,13 +12,15 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "react": "^18.2.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.5",
     "@types/react": "^18.2.37",
+    "react": "^18.2.0",
     "rollup": "^4.3.0",
     "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-import-css": "^3.3.5",
+    "rollup-plugin-postcss": "^4.0.2",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },
@@ -27,5 +29,9 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@types/react-dom": "^18.2.15",
+    "my-example-saibel7": "^1.0.0"
+  }
 }
