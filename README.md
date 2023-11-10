@@ -17,7 +17,7 @@ To use the `CookieConsentDialog` component, follow these steps:
 1. Import the `CookieConsentDialog` component into your application:
 
 ```javascript
-import CookieConsentDialog from 'waulter-test1';
+import {CookieConsentDialog} from 'waulter-test1';
 ```
 2. Create a callback function to handle user choices. This function will be called when the user interacts with the dialog:
 ```javascript
